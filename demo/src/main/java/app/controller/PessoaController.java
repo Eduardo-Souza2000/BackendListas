@@ -2,18 +2,16 @@ package app.controller;
 
 import java.util.List;
 
+import app.dto.LivroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import app.dto.PessoaDTO;
 import app.service.PessoaService;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/pessoa")
@@ -48,4 +46,27 @@ public class PessoaController {
 		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 
+	@PutMapping
+	public ResponseEntity<String> editar(@Validated @RequestParam("id") final Long id, @RequestBody final PessoaDTO pessoaDTO){
+
+		try{
+			return ResponseEntity.ok( this.pessoaService.editar(pessoaDTO, id));
+		}
+		catch (Exception e)
+		{
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
+
+	@DeleteMapping
+	public ResponseEntity<String> deletar(@RequestParam("id") final Long id){
+		try{
+			String msg =  this.pessoaService.deletar(id);
+			return ResponseEntity.ok(msg);
+		}
+		catch (Exception e)
+		{
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+		}
+	}
 }

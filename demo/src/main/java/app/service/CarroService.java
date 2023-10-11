@@ -1,8 +1,11 @@
 package app.service;
 import app.dto.CarroDTO;
+import app.dto.PessoaDTO;
 import app.entity.Carro;
+import app.entity.Pessoa;
 import app.repository.CarroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,41 @@ public class CarroService {
         Carro carro = this.toCarro(carroDTO);
         Carro carroSalvo = carroRepository.save(carro);
         return this.toCarroDTO(carroSalvo);
+    }
+
+    public String deletar(Long id) {
+        if (id == null) {
+            return "ID nulo. A exclusão não é possível.";
+        }
+
+        try {
+            carroRepository.deleteById(id);
+            return "Registro deletado com sucesso";
+        } catch (EmptyResultDataAccessException e) {
+            return "Registro não encontrado. A exclusão não é possível.";
+        } catch (Exception e) {
+            return "Erro ao excluir o registro: " + e.getMessage();
+        }
+    }
+
+    public String editar(CarroDTO carroDTO, Long id) {
+        if (id == null) {
+            return "ID nulo. A edição não é possível.";
+        }
+
+        try {
+            Carro carro = carroRepository.findById(id).orElse(null);
+
+            if (carro == null) {
+                return "Registro não encontrado. A edição não é possível.";
+            }
+            carro.setNome(carroDTO.getNome());
+            carro.setAno(carroDTO.getAno());
+            carroRepository.save(carro);
+            return "Editado com sucesso";
+        } catch (Exception e) {
+            return "Erro ao editar o registro: " + e.getMessage();
+        }
     }
 
     private CarroDTO toCarroDTO(Carro carro ) {

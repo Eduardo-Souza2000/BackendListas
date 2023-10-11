@@ -1,10 +1,13 @@
 package app.controller;
 import app.dto.CarroDTO;
+import app.dto.PessoaDTO;
 import app.service.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -40,4 +43,28 @@ public class CarroController {
         return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
+
+    @PutMapping
+    public ResponseEntity<String> editar(@Validated @RequestParam("id") final Long id, @RequestBody final CarroDTO carroDTO){
+
+        try{
+            return ResponseEntity.ok( this.carroService.editar(carroDTO, id));
+        }
+        catch (Exception e)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deletar(@RequestParam("id") final Long id){
+        try{
+            String msg =  this.carroService.deletar(id);
+            return ResponseEntity.ok(msg);
+        }
+        catch (Exception e)
+        {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
 }
