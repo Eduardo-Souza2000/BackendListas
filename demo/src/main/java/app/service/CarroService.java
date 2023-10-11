@@ -6,10 +6,12 @@ import app.entity.Pessoa;
 import app.repository.CarroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class CarroService {
     @Autowired
     private CarroRepository carroRepository;
