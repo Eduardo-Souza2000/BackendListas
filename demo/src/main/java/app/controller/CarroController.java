@@ -44,8 +44,8 @@ public class CarroController {
     }
 
 
-    @PutMapping
-    public ResponseEntity<String> editar(@Validated @RequestParam("id") final Long id, @RequestBody final CarroDTO carroDTO){
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<String> editar(@Validated @PathVariable("id") final Long id, @RequestBody final CarroDTO carroDTO){
 
         try{
             return ResponseEntity.ok( this.carroService.editar(carroDTO, id));
@@ -56,8 +56,8 @@ public class CarroController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> deletar(@RequestParam("id") final Long id){
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<String> deletar(@PathVariable("id") final Long id){
         try{
             String msg =  this.carroService.deletar(id);
             return ResponseEntity.ok(msg);

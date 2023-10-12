@@ -44,8 +44,8 @@ public class LivroController {
     }
 
 
-    @PutMapping
-    public ResponseEntity<String> editar(@Validated @RequestParam("id") final Long id, @RequestBody final LivroDTO livroDTO){
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<String> editar(@Validated @PathVariable("id") final Long id, @RequestBody final LivroDTO livroDTO){
 
         try{
             return ResponseEntity.ok( this.livroService.editar(livroDTO, id));
