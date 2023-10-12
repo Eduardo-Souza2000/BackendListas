@@ -46,8 +46,8 @@ public class PessoaController {
 		return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 	}
 
-	@PutMapping
-	public ResponseEntity<String> editar(@Validated @RequestParam("id") final Long id, @RequestBody final PessoaDTO pessoaDTO){
+	@PutMapping("/atualizar/{id}")
+	public ResponseEntity<String> editar(@Validated @PathVariable("id") final Long id, @RequestBody final PessoaDTO pessoaDTO){
 
 		try{
 			return ResponseEntity.ok( this.pessoaService.editar(pessoaDTO, id));
@@ -58,8 +58,8 @@ public class PessoaController {
 		}
 	}
 
-	@DeleteMapping
-	public ResponseEntity<String> deletar(@RequestParam("id") final Long id){
+	@DeleteMapping("/deletar/{id}")
+	public ResponseEntity<String> deletar(@PathVariable("id") final Long id){
 		try{
 			String msg =  this.pessoaService.deletar(id);
 			return ResponseEntity.ok(msg);
